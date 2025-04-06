@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthquake Simulation</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="static/styles.css">
+    <!-- Plotly JS for 3D Globe -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Earthquake Simulation & Visualization</h1>
+        <!-- Buttons for User Interaction -->
+        <div class="buttons">
+            <button onclick="simulateExtremeEarthquake()">شبیه ساز زلزله 10 ریشته</button>
+            <button onclick="simulateEarthquake(6)">شبیه ساز زلزل 6 ریشته</button>
+            <button onclick="simulateEarthquake(7)">شبیه ساز زلزله 7 ریشته</button>
+            <button onclick="simulateEarthquake(8)">شبیه ساز زلزله 8 ریشته</button>
+            <button onclick="simulateEarthquake(9)">شبیه ساز زلزله 9 ریشته</button>
+        </div>
+        
+        <!-- 3D Earth Globe -->
+        <div id="earthquake-globe"></div>
+
+        <!-- Impact text area for the simulated earthquake -->
+        <div class="output" id="impact-text"></div>
+    <div>
+        <h2>تجزیه و تحلیل زلزله</h2>
+        <p>این شبیه ساز به شما امکان می‌دهد تا تأثیرات مختلف زلزله‌ها را با مقادیر مختلف ریشتر مشاهده کنید. با کلیک بر روی دکمه‌های زیر، می‌توانید تأثیرات زلزله‌های مختلف را شبیه‌سازی کنید.</p>
+        <p>با استفاده از این شبیه‌ساز، می‌توانید درک بهتری از تأثیرات زلزله‌ها بر روی زمین و زیرساخت‌ها پیدا کنید.</p>
+    </div>
+    </div>
+
+    <script>
+        // Function to show real-time earthquake data
+        function showRealTimeData() {
+            document.getElementById("impact-text").innerHTML = "";  // Clear previous text
+
+            // Fetching real-time earthquake data from the USGS API
+            fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson")
+                .then(response => response.json())
+                .then(data => {
+                    const earthquakes = data.features;
+                    const latitudes = [];
+                    const longitudes = [];
+                    const magnitudes = [];
+                    const locations = [];
+
+                    // Extracting data from the API response
+                    earthquakes.forEach(eq => {
+                        const lat = eq.geometry.coordinates[1];
+                        const lon = eq.geometry.coordinates[0];
+                        const mag = eq.properties.mag;
+                        const place = eq.properties.place;
+
+                        latitudes.push(lat);
+                        longitudes.push(lon);
+                        magnitudes.push(mag);
+                        locations.push(place);
+                    });
+
+                    // Creating the 3D Globe using Plotly
+                    const trace = {
+                        type: 'scattergeo',
+                        locationmode: 'ISO-3',
+                        locations: latitudes.map((lat, index) => `${lat},${longitudes[index]}`),
+                        text: locations.map((loc, index) => `Magnitude: ${magnitudes[index]}<br>Location: ${loc}`),
+                        hoverinfo: 'text',
+                        mode: 'markers',
+                        marker: {
+                            size: 8,
+                            color: magnitudes,
+                            colorscale: 'Reds',
+                            showscale: true
+                        }
+                    };
+
+                    const layout = {
+                        geo: {
+                            projection: {
+                                type: 'orthographic'
+                            },
+                            showland: true,
+                            landcolor: 'lightgreen',
+                            showocean: true,
+                            oceancolor: 'lightblue'
+                        }
+                    };
+
+                    // Rendering the 3D Earth globe
+                    Plotly.newPlot('earthquake-globe', [trace], layout);
+                });
+        }
+
+        // Function to simulate the 10.0 Richter earthquake impact
+        // Function to simulate the impact of different earthquake magnitudes
+function simulateEarthquake(magnitude) {
+    let impactText = `<strong>تأثیر زلزله ${magnitude} ریشتری:</strong><br>`;
+
+    // Based on the magnitude, show different impacts
+    if (magnitude >= 10) {
+        impactText += `
+            - تخریب کامل ساختمان‌ها و زیرساخت‌ها.<br>
+            - شکاف‌ها و درزهای عظیم در سطح زمین.<br>
+            - وقوع سونامی در مناطق ساحلی.<br>
+            - تغییرات شدید زیست‌محیطی و رانش‌های گسترده زمین.<br>
+            - از دست رفتن گسترده جان انسان‌ها و آسیب‌های شدید به اکوسیستم‌ها.
+        `;
+    } else if (magnitude >= 9) {
+        impactText += `
+            - تخریب بسیاری از ساختمان‌ها و زیرساخت‌ها.<br>
+            - شکاف‌های وسیع در سطح زمین.<br>
+            - ایجاد امواج تسونامی در مناطق نزدیک به ساحل.<br>
+            - خسارات سنگین به مناطق شهری.<br>
+            - از دست دادن جان بسیاری از افراد.
+        `;
+    } else if (magnitude >= 8) {
+        impactText += `
+            - آسیب‌های جدی به ساختمان‌ها و پل‌ها.<br>
+            - وقوع شکاف‌ها و گسل‌های سطحی.<br>
+            - خسارات به زیرساخت‌های عمومی.<br>
+            - احتمال بروز سونامی در مناطق ساحلی.<br>
+            - از دست دادن جان تعداد زیادی از مردم.
+        `;
+    } else if (magnitude >= 7) {
+        impactText += `
+            - تخریب ساختمان‌های ضعیف و آسیب به زیرساخت‌ها.<br>
+            - گسل‌های سطحی و جابه‌جایی‌های زمین.<br>
+            - ایجاد مشکلات جدی در خدمات عمومی.<br>
+            - خسارات قابل توجه به مناطق شهری.
+        `;
+    } else if (magnitude >= 6) {
+        impactText += `
+            - آسیب به ساختمان‌های ضعیف و برخی زیرساخت‌ها.<br>
+            - ایجاد لرزش‌های شدید در سطح زمین.<br>
+            - امکان وقوع پس‌لرزه‌ها.<br>
+            - آسیب محدود به مناطق خاص.
+        `;
+    }
+
+    // Display the impact message
+    document.getElementById("impact-text").innerHTML = impactText;
+}
+    
+            // Function to simulate an extreme earthquake (10.0 Richter)
+            function simulateExtremeEarthquake() {
+                simulateEarthquake(10);
+            }
+    
+            // Initialize the globe with real-time data on page load
+            window.onload = showRealTimeData;
+    </script>
+</body>
+</html>

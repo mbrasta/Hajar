@@ -1,0 +1,115 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    color: #333;
+}
+
+/* Container for the content */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Title/Heading Styles */
+h1 {
+    font-size: 3rem;
+    color: #2d3e50;
+    margin-bottom: 20px;
+}
+
+/* Buttons container */
+.buttons {
+    margin-bottom: 20px;
+}
+
+/* Button Styles */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Impact text area */
+.output {
+    font-size: 1.2rem;
+    color: #333;
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+/* Plotly Globe Container */
+#earthquake-globe {
+    width: 100%;
+    height: 600px;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: #e4e4e4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+    #earthquake-globe {
+        height: 400px;
+    }
+    .output {
+        font-size: 1rem;
+        padding: 15px;
+    }
+}
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    h1 {
+        color: #bb86fc;
+    }
+    button {
+        background-color: #3700b3;
+        color: #bb86fc;
+    }
+    button:hover {
+        background-color: #6200ea;
+    }
+    .output {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
+}
